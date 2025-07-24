@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">Spending Tracker</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Spendings</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav me-3 mb-2 mb-lg-0" >
+                    <li class="nav-item">
+                        <a href="{% url 'create' %}" class="btn btn-success"> +Add </a>
+                    </li>
+                </ul>
+
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+
+
+                <ul class="navbar-nav ms-2 mb-2 mb-lg-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            {{ user.username }}
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <form action="{% url 'logout' %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-danger">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+
+{% block main %}
+
+    <div class="container text-center mt-5">
+        <div class="row row-cols-3">
+            {% for spends in spendinges %}
+                {% if spends.author == user %}
+                    <div class="col mt-2">
+                <div class="card">
+                    <div class="card-header">
+                        {{ spends.amount }} $
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ spends.title|truncatechars:25 }} </h5>
+                        <p class="card-text">{{ spends.description|truncatechars:70 }}</p>
+                        <a href="{% url 'view' spends.id %}" class="btn btn-secondary">View</a>
+                        <a href="{% url 'update' spends.id %}" class="btn btn-primary">Update</a>
+                    </div>
+                </div>
+            </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
