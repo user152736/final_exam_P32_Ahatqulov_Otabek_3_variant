@@ -1,0 +1,2 @@
+# final_exam_P32_Ahatqulov_Otabek_3_variant
+
